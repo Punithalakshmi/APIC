@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('api_authentications', function (Blueprint $table) {
             $table->id();
-            $table->longText('app_key')->unique();
-            $table->longText('app_secret')->unique();
+            $table->longText('app_key');
+            $table->longText('app_secret');
+         // $table->unique('app_key(191)', 'api_authentications_app_key');
+         // $table->unique('app_secret(191)', 'api_authentications_app_secret');
             $table->timestamps();
         });
     }
