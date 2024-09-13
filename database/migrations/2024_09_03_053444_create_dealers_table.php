@@ -22,6 +22,8 @@ return new class extends Migration
             $table->longText('current_url');
             $table->date('onboarding_date');
             $table->string('apic_user_type');
+            $table->longText('token');
+            $table->string('is_token_generated')->default('No');
             $table->timestamps();
         });
     }

@@ -44,7 +44,22 @@ class ApiAuthenticationController extends Controller
             $apiData['type']       = "Login";
             $apiData['url']        = "https://api.coohom.com/global/i18n-user/login";
             $apiLoginRes = api_request($apiData);
-            return redirect(route('admin/dealers'));
+             //convert json to array
+            $apiLoginres = json_decode($apiLoginRes,1);
+            
+            $coohomUrl = (isset($apiLoginres['d']['url']))?$apiLoginres['d']['url']:"";   
+            $token     = (isset($apiLoginres['d']['token']))?$apiLoginres['d']['token']:"";
+            $dealers   = Dealer::findOrFail($dealers['id']);
+            $dealers->current_url = $coohomUrl;
+            $dealers->token       = $token;
+           // $dealers->token       = $coohomUrl;
+            $dealers->is_token_generated = 'Yes';
+            $data = $dealers->save();
+            if ($data) {
+                session()->flash('success', 'Token Generated Successfully');
+                return redirect(route('admin/dealers'));
+            }
+           // return redirect(route('admin/dealers'));
         }
         else
         {

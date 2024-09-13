@@ -61,6 +61,7 @@
                                 <th>Time of Url Generation</th>
                                 <th>Status</th>
                                 <th>Apic User Type</th>
+                                <th>Is Token Generated</th>
                                 <th>OnBoarding Date</th>
                                 <th>Action</th>
                             </tr>
@@ -77,6 +78,7 @@
                                 <td class="align-middle">{{ $dealer->time_of_url_generation }}</td>
                                 <td class="align-middle">@if($dealer->status == 1) Active @else Dormant @endif</td>
                                 <td class="align-middle">{{ $dealer->apic_user_type }}</td>
+                                <td class="align-middle">{{ $dealer->is_token_generated }}</td>
                                 <td class="align-middle">{{ $dealer->onboarding_date }}</td>
                                 <td class="align-middle">
                                     <div class="btn-group" role="group" aria-label="Basic example">

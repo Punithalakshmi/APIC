@@ -96,9 +96,12 @@ if (!function_exists('api_request')) {
                               "created_at" => date("Y-m-d H:i:s")
                             ));
          $responseArr = json_decode($response,true);                   
-        if (isset($responseArr['c']) && ($responseArr['c'] == 0) && ($responseArr['d'] == 'Coohom Register suceeded!')) {
+        if ((isset($responseArr['c']) && ($responseArr['c'] == 0) && ($responseArr['d'] == 'Coohom Register suceeded!')) || ($apiDataP['type']=='Login' && isset($responseArr['c']) && $responseArr['c'] == 0)) {
             // Handle successful response
-           return true;
+           if($apiDataP['type'] == 'Register') 
+             return true;
+          else
+              return $responseArr;
             
         } else {
             // Handle error response

@@ -25,11 +25,11 @@ class DealerController extends Controller
 
         // Filter by status
         if ($request->has('status') && $request->status != '') {
-            $query->where('status', '>=', $request->status);
+            $query->where('status', '=', $request->status);
         }
 
         if ($request->has('apic_user_type') && $request->apic_user_type != '') {
-            $query->where('apic_user_type', '<=', $request->apic_user_type);
+            $query->where('apic_user_type', '=', $request->apic_user_type);
         }
 
         // Paginate the results
