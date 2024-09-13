@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('dealer_id');
             $table->string('name');
-            $table->longText('appuid')->unique();
+            $table->string('appuid')->unique();
             $table->string('email');
             $table->string('status');
             $table->timestamp('time_of_url_generation')->useCurrent();
