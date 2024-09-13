@@ -99,7 +99,7 @@ if (!function_exists('api_request')) {
         if ((isset($responseArr['c']) && ($responseArr['c'] == 0) && ($responseArr['d'] == 'Coohom Register suceeded!')) || ($apiDataP['type']=='Login' && isset($responseArr['c']) && $responseArr['c'] == 0)) {
             // Handle successful response
            if($apiDataP['type'] == 'Register') 
-             return true;
+              return true;
           else
               return $responseArr;
             

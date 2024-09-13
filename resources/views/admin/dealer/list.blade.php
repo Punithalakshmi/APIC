@@ -53,14 +53,14 @@
                         <thead class="table-primary">
                             <tr>
                                 <th>#</th>
-                                <th>Dealer ID</th>
+                               <!-- <th>Dealer ID</th>-->
                                 <th>Name</th>
-                                <th>Email</th>
+                             <!--   <th>Email</th>-->
                                 <th>Appuid</th>
                                 <th>Current Url</th>
-                                <th>Time of Url Generation</th>
+                                <th>Generation Time</th>
                                 <th>Status</th>
-                                <th>Apic User Type</th>
+                                <th>User Type</th>
                                 <th>Is Token Generated</th>
                                 <th>OnBoarding Date</th>
                                 <th>Action</th>
@@ -70,21 +70,27 @@
                             @forelse ($dealers as $dealer)
                             <tr>
                                 <td class="align-middle">{{ $loop->iteration }}</td>
-                                <td class="align-middle">{{ $dealer->dealer_id }}</td>
+                                <!--<td class="align-middle">{{ $dealer->dealer_id }}</td>-->
                                 <td class="align-middle">{{ $dealer->name }}</td>
-                                <td class="align-middle">{{ $dealer->email }}</td>
+                                <!--<td class="align-middle">{{ $dealer->email }}</td>-->
                                 <td class="align-middle">{{ $dealer->appuid }}</td>
                                 <td class="align-middle">{{ $dealer->current_url }}</td>
                                 <td class="align-middle">{{ $dealer->time_of_url_generation }}</td>
                                 <td class="align-middle">@if($dealer->status == 1) Active @else Dormant @endif</td>
                                 <td class="align-middle">{{ $dealer->apic_user_type }}</td>
-                                <td class="align-middle">{{ $dealer->is_token_generated }}</td>
+                                <td class="align-middle">
+                                    @if($dealer->is_token_generated == 'Yes')
+                                    <p class="text-primary">Success</p>
+                                    @else
+                                    <p>Not Yet</p>
+                                    @endif
+                                </td>
                                 <td class="align-middle">{{ $dealer->onboarding_date }}</td>
                                 <td class="align-middle">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="{{ route('admin/dealers/edit', ['id'=>$dealer->id]) }}" type="button" class="btn btn-secondary">Edit</a>
                                         <a href="{{ route('admin/dealers/delete', ['id'=>$dealer->id]) }}" type="button" class="btn btn-danger">Delete</a>
-                                        <a href="{{ route('admin/api/register', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Register Coohom</a>
+                                        <a href="{{ route('admin/api/register', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Register</a>
                                     </div>
                                 </td>
                             </tr>

@@ -43,9 +43,9 @@ class ApiAuthenticationController extends Controller
            // session()->flash('success', 'Register Successfully');
             $apiData['type']       = "Login";
             $apiData['url']        = "https://api.coohom.com/global/i18n-user/login";
-            $apiLoginRes = api_request($apiData);
+            $apiLoginres = api_request($apiData);
              //convert json to array
-            $apiLoginres = json_decode($apiLoginRes,1);
+           // $apiLoginres = json_decode($apiLoginRes,true);
             
             $coohomUrl = (isset($apiLoginres['d']['url']))?$apiLoginres['d']['url']:"";   
             $token     = (isset($apiLoginres['d']['token']))?$apiLoginres['d']['token']:"";
