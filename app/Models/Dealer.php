@@ -21,6 +21,7 @@ class Dealer extends Model
         'time_of_url_generation',
         'current_url',
         'onboarding_date',
+        'apic_user_type',
         'created_at',
         'updated_at'
     ];

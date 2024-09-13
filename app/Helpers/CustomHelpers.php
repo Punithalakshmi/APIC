@@ -53,7 +53,10 @@ function generateTimestampAndSign($apiData)
     $timestamp = round(microtime(true) * 1000);
 
     // Generate the sign (hash) using the secret key and timestamp
-    $sign = hash('md5',$apiData['app_secret'] . $apiData['app_key'].$apiData['app_uid'].$timestamp);
+    if($apiData['type']=='Register')
+      $sign = hash('md5',$apiData['app_secret'].$apiData['app_key'].$timestamp);
+    else
+       $sign = hash('md5',$apiData['app_secret'].$apiData['app_key'].$apiData['app_uid'].$timestamp);
 
     // Return both timestamp and sign
     return array(
@@ -93,7 +96,7 @@ if (!function_exists('api_request')) {
                               "created_at" => date("Y-m-d H:i:s")
                             ));
          $responseArr = json_decode($response,true);                   
-        if (isset($responseArr['c']) && ($responseArr['c'] == 100003)) {
+        if (isset($responseArr['c']) && ($responseArr['c'] == 0) && ($responseArr['d'] == 'Coohom Register suceeded!')) {
             // Handle successful response
            return true;
             

@@ -73,9 +73,21 @@
                        
                         <div class="row mb-3">
                             <div class="col">
-                                <input type="radio" name="status"  placeholder="Status" value="1">Active
+                                <label>Status</label>
+                                <input type="radio" name="status"  placeholder="Status" checked value="1">Active
                                 <input type="radio" name="status" placeholder="Status" value="2">Dormant
                                 @error('status')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>User Type</label>
+                                <input type="radio" name="apic_user_type" checked value="Basic">Basic
+                                <input type="radio" name="apic_user_type" value="Pro">Pro
+                                <input type="radio" name="apic_user_type" value="Premium">Premium
+                                @error('apic_user_type')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
                             </div>

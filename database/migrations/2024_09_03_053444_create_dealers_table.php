@@ -21,8 +21,8 @@ return new class extends Migration
             $table->timestamp('time_of_url_generation')->useCurrent();
             $table->longText('current_url');
             $table->date('onboarding_date');
-            $table->integer('created_at');
-            $table->integer('updated_at');
+            $table->string('apic_user_type');
+            $table->timestamps();
         });
     }
 

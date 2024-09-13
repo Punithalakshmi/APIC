@@ -9,9 +9,31 @@ use Illuminate\Support\Facades\Http;
 class DealerController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        $dealers = Dealer::orderBy('id', 'desc')->get();
+       // $dealers = Dealer::orderBy('id', 'desc')->get();
+         $query = Dealer::query();
+        // Search filter by name
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by email
+        if ($request->has('email') && $request->email != '') {
+            $query->where('email', $request->email);
+        }
+
+        // Filter by status
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', '>=', $request->status);
+        }
+
+        if ($request->has('apic_user_type') && $request->apic_user_type != '') {
+            $query->where('apic_user_type', '<=', $request->apic_user_type);
+        }
+
+        // Paginate the results
+        $dealers = $query->paginate(10);
         $total   = Dealer::count();
        
         return view('admin.dealer.list', compact(['dealers', 'total']));
@@ -32,7 +54,8 @@ class DealerController extends Controller
             'status' => 'required',
            // 'time_of_url_generation' => 'required',
             'current_url' => 'required',
-            'onboarding_date' => 'required'
+            'onboarding_date' => 'required',
+            'apic_user_type' => 'required'
         ]);
 
         $data = Dealer::create($validation);
@@ -72,6 +95,7 @@ class DealerController extends Controller
         $status = $request->status;
         $current_url = $request->current_url;
         $onboarding_date = $request->onboarding_date;
+        $apic_user_type = $request->apic_user_type;
  
         $dealers->name = $name;
         $dealers->email = $email;
@@ -80,6 +104,7 @@ class DealerController extends Controller
         $dealers->status = $status;
         $dealers->current_url = $current_url;
         $dealers->onboarding_date = $onboarding_date;
+        $dealers->apic_user_type = $apic_user_type;
         $data = $dealers->save();
         if ($data) {
             session()->flash('success', 'Dealer Update Successfully');

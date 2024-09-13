@@ -73,6 +73,17 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>User Type</label>
+                                <input type="radio" name="apic_user_type" value="Basic" {{ old('apic_user_type', $dealers->apic_user_type ?? '') == 'Basic' ? 'checked' : '' }}>Basic
+                                <input type="radio" name="apic_user_type" value="Pro" {{ old('apic_user_type', $dealers->apic_user_type ?? '') == 'Pro' ? 'checked' : '' }}>Pro
+                                <input type="radio" name="apic_user_type" value="Premium" {{ old('apic_user_type', $dealers->apic_user_type ?? 'Premium') == '' ? 'checked' : '' }}>Premium
+                                @error('apic_user_type')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="d-grid">
                                 <button class="btn btn-primary">Update</button>
