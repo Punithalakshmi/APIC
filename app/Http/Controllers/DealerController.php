@@ -53,7 +53,7 @@ class DealerController extends Controller
             'appuid' => 'required',
             'status' => 'required',
            // 'time_of_url_generation' => 'required',
-            'current_url' => 'required',
+       //     'current_url' => 'required',
             'onboarding_date' => 'required',
             'apic_user_type' => 'required'
         ]);

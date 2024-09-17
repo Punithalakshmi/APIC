@@ -49,9 +49,9 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <input type="text" name="current_url" class="form-control" placeholder="Current URL">
-                                @error('current_url')
+                                <!-- @error('current_url')
                                 <span class="text-danger">{{$message}}</span>
-                                @enderror
+                                @enderror -->
                             </div>
                         </div>
                         <div class="row mb-3">

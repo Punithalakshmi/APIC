@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ApiAuthentication;
 use Illuminate\Http\Request;
 use App\Models\Dealer;
+use App\Mail\CommonMail;
+use Mail;
 
 class ApiAuthenticationController extends Controller
 {
@@ -31,10 +33,12 @@ class ApiAuthenticationController extends Controller
         $apiData['name']       = $dealers['name'];
         $apiData['id']         = $dealers['id'];
         $apiData['email']      = $dealers['email'];
-        $apiData['app_key']    = trim($apiInfo['app_key']);
-        $apiData['app_secret'] = trim($apiInfo['app_secret']);
+        //$apiData['app_key']    = trim($apiInfo['app_key']);
+        //$apiData['app_secret'] = trim($apiInfo['app_secret']);
         $apiData['app_uid']    = $appUid;
-        
+        $apiData['app_key']    = env('APP_KEY');
+        $apiData['app_secret'] = env('SECRET_KEY');
+    
         $apiData['type']       = "Register";
         $apiData['url']        = "https://api.coohom.com/global/i18n-user/register";
        
@@ -46,16 +50,27 @@ class ApiAuthenticationController extends Controller
             $apiLoginres = api_request($apiData);
              //convert json to array
            // $apiLoginres = json_decode($apiLoginRes,true);
-            
+             //domainname
+            $domainName= env('DOMAIN_NAME');
             $coohomUrl = (isset($apiLoginres['d']['url']))?$apiLoginres['d']['url']:"";   
             $token     = (isset($apiLoginres['d']['token']))?$apiLoginres['d']['token']:"";
             $dealers   = Dealer::findOrFail($dealers['id']);
-            $dealers->current_url = $coohomUrl;
+
+            $link = 'https://'.$domainName.'/api/saas/openapi/v2/redirect?url=https://'.$domainName.$coohomUrl."&token=".$token."&locale=en_US";
+
+            $dealers->current_url = $link;
             $dealers->token       = $token;
            // $dealers->token       = $coohomUrl;
             $dealers->is_token_generated = 'Yes';
             $data = $dealers->save();
             if ($data) {
+               
+                $mailData = array(
+                    'title' => 'Token Generated Successfully',
+                    'link'  => $link
+                );
+                   
+                Mail::to($dealers['email'])->send(new CommonMail($mailData));
                 session()->flash('success', 'Token Generated Successfully');
                 return redirect(route('admin/dealers'));
             }

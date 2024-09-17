@@ -74,7 +74,7 @@
                                 <td class="align-middle">{{ $dealer->name }}</td>
                                 <!--<td class="align-middle">{{ $dealer->email }}</td>-->
                                 <td class="align-middle">{{ $dealer->appuid }}</td>
-                                <td class="align-middle">{{ $dealer->current_url }}</td>
+                                <td class="align-middle"><a href="{{ $dealer->current_url }}">{{ substr($dealer->current_url, 0, 15) }}</a></td>
                                 <td class="align-middle">{{ $dealer->time_of_url_generation }}</td>
                                 <td class="align-middle">@if($dealer->status == 1) Active @else Dormant @endif</td>
                                 <td class="align-middle">{{ $dealer->apic_user_type }}</td>
