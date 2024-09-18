@@ -25,6 +25,11 @@ class ApiAuthenticationController extends Controller
     public function register($id)
     {
         //
+        if(empty($id)){
+            abort(404, 'Dealer not found.');
+        }
+
+
         $dealers = Dealer::findOrFail($id);
       
         $apiData    = array();
@@ -33,25 +38,23 @@ class ApiAuthenticationController extends Controller
         $apiData['id']         = $dealers['id'];
         $apiData['email']      = $dealers['email'];
         $apiData['app_uid']    = $appUid;
-        $apiData['app_key']    = env('COOHOM_API_KEY');
-        $apiData['app_secret'] = env('COOHOM_SECRET_KEY');
         $apiData['type']       = "Register";
-        $apiData['url']        = env('COOHOM_REGISTER_API_URL');;
+        $apiData['url']        = getRegisterApiUrl();
        
         $apiRes = api_request($apiData);
         if($apiRes){
           
             $apiData['type']       = "Login";
-            $apiData['url']        = env('COOHOM_LOGIN_API_URL');
+            $apiData['url']        = getLoginApiUrl();
             $apiLoginres           = api_request($apiData);
          
              //domainname
-            $domainName= env('DOMAIN_NAME');
+            $domainName= getCoohomDomain();
             $coohomUrl = (isset($apiLoginres['d']['url']))?$apiLoginres['d']['url']:"";   
             $token     = (isset($apiLoginres['d']['token']))?$apiLoginres['d']['token']:"";
             $dealers   = Dealer::findOrFail($dealers['id']);
 
-            $link = 'https://'.$domainName.'/api/saas/openapi/v2/redirect?url=https://'.$domainName.$coohomUrl."&token=".$token."&locale=en_US";
+            $link = 'https://'.$domainName.'/api/saas/openapi/v2/redirect?url=https://'.$domainName."/pub/saas/apps/project/list&token=".$token."&locale=en_US";
 
             $dealers->current_url = $link;
             $dealers->token       = $token;
@@ -59,13 +62,8 @@ class ApiAuthenticationController extends Controller
             $dealers->is_token_generated = 'Yes';
             $data = $dealers->save();
 
-            Apilogs::create(array("action" => $apiData['url'],
-                "action_type" => 'Token Generated Successfully',
-                "dealer_id"=> $dealers['id'],
-                "api_response"=> json_encode($apiLoginres),
-                "created_at" => date("Y-m-d H:i:s")
-            ));
-
+            saveApiLogs($apiData['url'],'Token Generated Successfully',$dealers['id'],json_encode($apiLoginres)); 
+           
             if ($data) {
                
                 $mailData = array(
@@ -75,12 +73,9 @@ class ApiAuthenticationController extends Controller
                    
                 Mail::to($dealers['email'])->send(new CommonMail($mailData));
                 session()->flash('success', 'Token Generated Successfully');
-                Apilogs::create(array("action" => $apiData['url'],
-                "action_type" => "Mail",
-                "dealer_id"=> $dealers['id'],
-                "api_response"=> "Sent mail to Dealer",
-                "created_at" => date("Y-m-d H:i:s")
-              ));
+                
+                saveApiLogs($apiData['url'],'Mail Sent',$dealers['id'],'Sent mail to Dealer'); 
+
                 return redirect(route('admin/dealers'));
             }
 
@@ -88,12 +83,8 @@ class ApiAuthenticationController extends Controller
         else
         {
             session()->flash('error', 'Error in coohom register');
-            Apilogs::create(array("action" => $apiData['url'],
-            "action_type" => "Error: Coohom Register",
-            "dealer_id"=> $dealers['id'],
-            "api_response"=> "Error in Coohom Register",
-            "created_at" => date("Y-m-d H:i:s")
-          ));
+            
+            saveApiLogs($apiData['url'],'Error: Coohom Register',$dealers['id'],'Error in Coohom Register'); 
             return redirect(route('admin/dealers'));
         }
     }

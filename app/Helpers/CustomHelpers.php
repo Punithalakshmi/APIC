@@ -55,9 +55,9 @@ function generateTimestampAndSign($apiData)
 
     // Generate the sign (hash) using the secret key and timestamp
     if($apiData['type']=='Register')
-      $sign = hash('md5',$apiData['app_secret'].$apiData['app_key'].$timestamp);
+      $sign = hash('md5',getApiSecretKey().getApiKey().$timestamp);
     else
-       $sign = hash('md5',$apiData['app_secret'].$apiData['app_key'].$apiData['app_uid'].$timestamp);
+       $sign = hash('md5',getApiSecretKey().getApiKey().$apiData['app_uid'].$timestamp);
 
     // Return both timestamp and sign
     return array(
@@ -73,7 +73,7 @@ if (!function_exists('api_request')) {
 
         $apiData = generateTimestampAndSign($apiDataP);
     
-        $apiUrl = $apiDataP['url'].'?appkey='.$apiDataP['app_key'].'&timestamp='.$apiData['timestamp'].'&appuid='.$apiDataP['app_uid'].'&sign='.$apiData['sign'];
+        $apiUrl = $apiDataP['url'].'?appkey='.getApiKey().'&timestamp='.$apiData['timestamp'].'&appuid='.$apiDataP['app_uid'].'&sign='.$apiData['sign'];
       
         $response = Http::withHeaders([
             'Content-Type' => 'application/json'
@@ -81,13 +81,10 @@ if (!function_exists('api_request')) {
             'name' => $apiDataP['name'],
             'email' => $apiDataP['email']
         ]);
-        Apilogs::create(array("action" => $apiDataP['url'],
-                              "action_type" => $apiDataP['type'],
-                              "dealer_id"=> $apiDataP['id'],
-                              "api_response"=> $response,
-                              "created_at" => date("Y-m-d H:i:s")
-                            ));
-         $responseArr = json_decode($response,true);                   
+        
+        saveApiLogs($apiDataP['url'],$apiDataP['type'],$apiDataP['id'],$response);  
+        $responseArr = json_decode($response,true);  
+
         if ((isset($responseArr['c']) && ($responseArr['c'] == 0) && ($responseArr['d'] == 'Coohom Register suceeded!')) || ($apiDataP['type']=='Login' && isset($responseArr['c']) && $responseArr['c'] == 0)) {
             // Handle successful response
            if($apiDataP['type'] == 'Register') 
@@ -112,10 +109,56 @@ if (!function_exists('api_info')) {
     }
 }
 
-if (!function_exists('apiRequest')) {
+if (!function_exists('getApiKey')) {
  
-    function apiRequest($id='')
+    function getApiKey()
     {
-         return ApiAuthentication::find(1)->toArray();
+         return env('COOHOM_API_KEY');
+    }
+}
+
+if (!function_exists('getApiSecretKey')) {
+ 
+    function getApiSecretKey()
+    {
+         return env('COOHOM_SECRET_KEY');
+    }
+}
+
+if (!function_exists('getRegisterApiUrl')) {
+ 
+    function getRegisterApiUrl()
+    {
+         return env('COOHOM_REGISTER_API_URL');
+    }
+}
+
+if (!function_exists('getLoginApiUrl')) {
+ 
+    function getLoginApiUrl()
+    {
+        return env('COOHOM_LOGIN_API_URL');
+    }
+}
+
+if (!function_exists('getCoohomDomain')) {
+ 
+    function getCoohomDomain()
+    {
+         return env('DOMAIN_NAME');
+    }
+}
+
+if (!function_exists('saveApiLogs')) {
+ 
+    function saveApiLogs($action,$type,$dealer_id,$response)
+    {
+        Apilogs::create(array("action" => $action,
+        "action_type" => $type,
+        "dealer_id"=> $dealer_id,
+        "api_response"=> $response,
+        "created_at" => date("Y-m-d H:i:s")
+        ));
+
     }
 }
