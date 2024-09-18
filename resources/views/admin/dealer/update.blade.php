@@ -12,7 +12,7 @@
                     @endif
                     <p><a href="{{ route('admin/dealers') }}" class="btn btn-primary">Go Back</a></p>
  
-                    <form action="/admin/dealers/edit/{{$dealers->id}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('admin.dealers.update',$dealers->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="row mb-3">
