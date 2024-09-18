@@ -2,6 +2,7 @@
 
 use App\Models\ApiAuthentication;
 use App\Models\Apilogs;
+use App\Models\Dealer;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
@@ -71,23 +72,14 @@ if (!function_exists('api_request')) {
     {
 
         $apiData = generateTimestampAndSign($apiDataP);
-      //  print_r($apiData); die;
-        //$apiUrl = $apiData['url'].'?appuid='.$apiData['app_uid'].'&appkey='.$apiData['app_key'].'&timestamp='.$apiData['timestamp'].'&sign='.$apiData['sign '];
-     //   $timestamp  = round(microtime(true) * 1000);
-       
-       // $apiData['sign ']      = md5(trim($apiData['app_key']).trim($apiData['app_secret']).$apiData['app_uid'].$timestamp);
-      //  $apiData['timestamp']  = $timestamp; 
-        
+    
         $apiUrl = $apiDataP['url'].'?appkey='.$apiDataP['app_key'].'&timestamp='.$apiData['timestamp'].'&appuid='.$apiDataP['app_uid'].'&sign='.$apiData['sign'];
-      // $apiUrl = $apiData['url'].'?appuid='.$apiData['app_uid'];
-
+      
         $response = Http::withHeaders([
             'Content-Type' => 'application/json'
         ])->post($apiUrl, [
             'name' => $apiDataP['name'],
             'email' => $apiDataP['email']
-         //   'password' => generate_app_uid(8),
-         //   'roleId' => 2
         ]);
         Apilogs::create(array("action" => $apiDataP['url'],
                               "action_type" => $apiDataP['type'],
@@ -115,6 +107,14 @@ if (!function_exists('api_request')) {
 if (!function_exists('api_info')) {
  
     function api_info($apiData=array())
+    {
+         return ApiAuthentication::find(1)->toArray();
+    }
+}
+
+if (!function_exists('apiRequest')) {
+ 
+    function apiRequest($id='')
     {
          return ApiAuthentication::find(1)->toArray();
     }
