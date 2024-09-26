@@ -29,11 +29,10 @@ class ApiAuthenticationController extends Controller
             abort(404, 'Dealer not found.');
         }
 
-
         $dealers = Dealer::findOrFail($id);
       
         $apiData    = array();
-        $appUid     = generate_app_uid(6);
+        $appUid                = generate_app_uid(6);
         $apiData['name']       = $dealers['name'];
         $apiData['id']         = $dealers['id'];
         $apiData['email']      = $dealers['email'];
@@ -60,6 +59,7 @@ class ApiAuthenticationController extends Controller
             $dealers->token       = $token;
 
             $dealers->is_token_generated = 'Yes';
+            $dealers->time_of_url_generation = date("Y-m-d H:i:s");	
             $data = $dealers->save();
 
             saveApiLogs($apiData['url'],'Token Generated Successfully',$dealers['id'],json_encode($apiLoginres)); 
