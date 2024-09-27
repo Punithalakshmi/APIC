@@ -71,7 +71,7 @@
                         </thead>
                         <tbody>
                             @forelse ($dealers as $dealer)
-                              
+                              $differentDate = Carbon::parse($dealer->time_of_url_generation);
                             <tr>
                                 <td class="align-middle">{{ $loop->iteration }}</td>
                                 <!--<td class="align-middle">{{ $dealer->dealer_id }}</td>-->
@@ -97,7 +97,7 @@
                                           @if($dealer->token == '') 
                                            <a href="{{ route('admin/api/register', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Register</a>
                                           @endif  
-                                            @if  (Carbon::now()->diffInDays(Carbon::parse($dealer->time_of_url_generation)) > 7)
+                                            @if ($differentDate->lt(Carbon::now()->subDays(7)))
                                             <a href="{{ route('admin/api/refreshToken', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Refresh Token</a>
                                             @else
                                                 
