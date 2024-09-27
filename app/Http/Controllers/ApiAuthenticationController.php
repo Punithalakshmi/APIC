@@ -6,7 +6,7 @@ use App\Models\ApiAuthentication;
 use Illuminate\Http\Request;
 use App\Models\Dealer;
 use App\Models\Apilogs;
-use App\Mail\CommonMail;
+use App\Mail\RefreshTokenMail;
 use Mail;
 
 class ApiAuthenticationController extends Controller
@@ -85,6 +85,74 @@ class ApiAuthenticationController extends Controller
             session()->flash('error', 'Error in coohom register');
             
             saveApiLogs($apiData['url'],'Error: Coohom Register',$dealers['id'],'Error in Coohom Register'); 
+            return redirect(route('admin/dealers'));
+        }
+    }
+
+
+    public function refreshToken($id)
+    {
+        //
+        if(empty($id)){
+            abort(404, 'Dealer not found.');
+        }
+
+        $dealers = Dealer::findOrFail($id);
+      
+        $apiData    = array();
+        $appUid                = $dealers['appuid'];
+        $apiData['name']       = $dealers['name'];
+        $apiData['id']         = $dealers['id'];
+        $apiData['email']      = $dealers['email'];
+        $apiData['app_uid']    = $appUid;
+       // $apiData['type']       = "Register";
+       // $apiData['url']        = getRegisterApiUrl();
+       
+      //  $apiRes = api_request($apiData);
+      
+          
+            $apiData['type']       = "Login";
+            $apiData['url']        = getLoginApiUrl();
+            $apiLoginres           = api_request($apiData);
+          if( $apiLoginres){
+             //domainname
+            $domainName= getCoohomDomain();
+            $coohomUrl = (isset($apiLoginres['d']['url']))?$apiLoginres['d']['url']:"";   
+            $token     = (isset($apiLoginres['d']['token']))?$apiLoginres['d']['token']:"";
+            $dealers   = Dealer::findOrFail($dealers['id']);
+
+            $link = 'https://'.$domainName.'/api/saas/openapi/v2/redirect?url=https://'.$domainName."/pub/saas/apps/project/list&token=".$token."&locale=en_US";
+
+            $dealers->current_url = $link;
+            $dealers->token       = $token;
+
+            $dealers->is_token_generated = 'Yes';
+            $dealers->time_of_url_generation = date("Y-m-d H:i:s");	
+            $data = $dealers->save();
+
+            saveApiLogs($apiData['url'],'Refresh Token Generated Successfully',$dealers['id'],json_encode($apiLoginres)); 
+           
+            if ($data) {
+               
+                $mailData = array(
+                    'title' => 'Token Refreshed Successfully',
+                    'link'  => $link
+                );
+                   
+                Mail::to($dealers['email'])->send(new RefreshTokenMail($mailData));
+                session()->flash('success', 'Token Refreshed Successfully');
+                
+                saveApiLogs($apiData['url'],'Mail Sent',$dealers['id'],'Sent mail to Dealer'); 
+
+                return redirect(route('admin/dealers'));
+            }
+
+        }
+        else
+        {
+            session()->flash('error', 'Error in coohom refresh login');
+            
+            saveApiLogs($apiData['url'],'Error: Coohom Refresh Login',$dealers['id'],'Error in Coohom Refresh Login'); 
             return redirect(route('admin/dealers'));
         }
     }

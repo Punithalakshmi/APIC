@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Dealer;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class DealerController extends Controller
 {
@@ -33,6 +34,7 @@ class DealerController extends Controller
         }
 
         // Paginate the results
+        
         $dealers = $query->paginate(10);
         $total   = Dealer::count();
        

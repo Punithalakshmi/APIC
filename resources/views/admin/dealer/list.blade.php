@@ -1,3 +1,6 @@
+@php
+    use Carbon\Carbon;
+@endphp
 <x-app-layout>
    
     <div class="py-12">
@@ -68,6 +71,7 @@
                         </thead>
                         <tbody>
                             @forelse ($dealers as $dealer)
+                              
                             <tr>
                                 <td class="align-middle">{{ $loop->iteration }}</td>
                                 <!--<td class="align-middle">{{ $dealer->dealer_id }}</td>-->
@@ -90,9 +94,14 @@
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="{{ route('admin/dealers/edit', ['id'=>$dealer->id]) }}" type="button" class="btn btn-secondary">Edit</a>
                                         <a href="{{ route('admin/dealers/delete', ['id'=>$dealer->id]) }}" type="button" class="btn btn-danger">Delete</a>
-                                        @if($dealer->token == '') 
-                                          <a href="{{ route('admin/api/register', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Register</a>
+                                          @if($dealer->token == '') 
+                                           <a href="{{ route('admin/api/register', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Register</a>
                                           @endif  
+                                            @if ($dealer->time_of_url_generation->lt(Carbon::now()->subDays(7)))
+                                            <a href="{{ route('admin/api/refreshToken', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Refresh Token</a>
+                                            @else
+                                                
+                                            @endif
                                     </div>
                                 </td>
                             </tr>
