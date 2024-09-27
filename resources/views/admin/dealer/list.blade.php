@@ -97,7 +97,7 @@
                                           @if($dealer->token == '') 
                                            <a href="{{ route('admin/api/register', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Register</a>
                                           @endif  
-                                            @if ($dealer->time_of_url_generation->lt(Carbon::now()->subDays(7)))
+                                            @if  (Carbon::now()->diffInDays(Carbon::parse($dealer->time_of_url_generation)) > 7)
                                             <a href="{{ route('admin/api/refreshToken', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Refresh Token</a>
                                             @else
                                                 
