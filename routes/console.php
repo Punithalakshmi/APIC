@@ -11,4 +11,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('coohom:cron')->weekly()->mondays()->at('06:00');
 
-Schedule::command('coohom:cron')->everyMinute();
+//Schedule::command('coohom:cron')->everyMinute();
