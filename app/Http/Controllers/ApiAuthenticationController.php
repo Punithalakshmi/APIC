@@ -105,16 +105,16 @@ class ApiAuthenticationController extends Controller
         $apiData['id']         = $dealers['id'];
         $apiData['email']      = $dealers['email'];
         $apiData['app_uid']    = $appUid;
-       // $apiData['type']       = "Register";
-       // $apiData['url']        = getRegisterApiUrl();
+        $apiData['type']       = "Register";
+        $apiData['url']        = getRegisterApiUrl();
        
-      //  $apiRes = api_request($apiData);
+        $apiRes = api_request($apiData);
       
-          
+        if($apiRes){  
             $apiData['type']       = "Login";
             $apiData['url']        = getLoginApiUrl();
             $apiLoginres           = api_request($apiData);
-          if( $apiLoginres){
+          
              //domainname
             $domainName= getCoohomDomain();
             $coohomUrl = (isset($apiLoginres['d']['url']))?$apiLoginres['d']['url']:"";   
