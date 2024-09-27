@@ -61,9 +61,10 @@ class DealerController extends Controller
         ]);
 
         $data = Dealer::create($validation);
+        $lastInsertedId = $data->id;
         if ($data) {
             session()->flash('success', 'Dealer Add Successfully');
-            return redirect(route('admin/dealers'));
+            return redirect(route('admin/api/register',$lastInsertedId));
         } else {
             session()->flash('error', 'Some problem occure');
             return redirect(route('admin/dealers/create'));

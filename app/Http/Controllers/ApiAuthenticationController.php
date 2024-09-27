@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Dealer;
 use App\Models\Apilogs;
 use App\Mail\RefreshTokenMail;
+use App\Mail\CommonMail;
 use Mail;
 
 class ApiAuthenticationController extends Controller
@@ -32,7 +33,8 @@ class ApiAuthenticationController extends Controller
         $dealers = Dealer::findOrFail($id);
       
         $apiData    = array();
-        $appUid                = generate_app_uid(6);
+        //$appUid                = generate_app_uid(6);
+        $appUid                = $dealers['appuid'];
         $apiData['name']       = $dealers['name'];
         $apiData['id']         = $dealers['id'];
         $apiData['email']      = $dealers['email'];
@@ -57,6 +59,7 @@ class ApiAuthenticationController extends Controller
 
             $dealers->current_url = $link;
             $dealers->token       = $token;
+            $dealers->appuid    = $appUid;
 
             $dealers->is_token_generated = 'Yes';
             $dealers->time_of_url_generation = date("Y-m-d H:i:s");	
@@ -68,7 +71,8 @@ class ApiAuthenticationController extends Controller
                
                 $mailData = array(
                     'title' => 'Token Generated Successfully',
-                    'link'  => $link
+                    'link'  => $link,
+                    'name' => $dealers['name']
                 );
                    
                 Mail::to($dealers['email'])->send(new CommonMail($mailData));

@@ -40,7 +40,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <input type="text" name="appuid" class="form-control" placeholder="App Uid">
+                                <input type="text" name="appuid" class="form-control" placeholder="App Uid" value={{ generate_app_uid(6) }} readonly>
                                 @error('appuid')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror

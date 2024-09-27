@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Dealer;
 use App\Models\Apilogs;
 use App\Mail\CommonMail;
+use App\Mail\RefreshTokenMail;
 use Mail;
 
 class CoohomCron extends Command
@@ -22,7 +23,7 @@ class CoohomCron extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Refresh Token';
 
     /**
      * Execute the console command.
@@ -37,21 +38,23 @@ class CoohomCron extends Command
            foreach($dealersLists as $d => $dealers ){
 
             $apiData    = array();
-            $appUid                = generate_app_uid(6);
+            $appUid                = $dealers['appuid'];
             $apiData['name']       = $dealers['name'];
             $apiData['id']         = $dealers['id'];
             $apiData['email']      = $dealers['email'];
             $apiData['app_uid']    = $appUid;
-            $apiData['type']       = "Register";
-            $apiData['url']        = getRegisterApiUrl();
+           // $apiData['type']       = "Register";
+         //   $apiData['url']        = getRegisterApiUrl();
         
-            $apiRes = api_request($apiData);
+            //$apiRes = api_request($apiData);
 
-            if($apiRes){
+           // if($apiRes){
             
                 $apiData['type']   = "Login";
                 $apiData['url']    = getLoginApiUrl();
                 $apiLoginres       = api_request($apiData);
+
+            if($apiLoginres){
             
                 //domainname
                 $domainName= getCoohomDomain();
@@ -68,17 +71,17 @@ class CoohomCron extends Command
                 $dealers->time_of_url_generation = date("Y-m-d H:i:s");	
                 $data = $dealers->save();
 
-                saveApiLogs($apiData['url'],'Cron: Login Token Generated Successfully',$dealers['id'],json_encode($apiLoginres)); 
+                saveApiLogs($apiData['url'],'Cron: Token has been refreshed Successfully',$dealers['id'],json_encode($apiLoginres)); 
             
                 if ($data) {
                 
                     $mailData = array(
-                        'title' => 'Login Token Generated Successfully - '.$dealers['name'],
+                        'title' => 'Token has been refreshed Successfully - '.$dealers['name'],
                         'link'  => $link,
                         'name' => $dealers['name']
                     );
                     
-                    Mail::to($dealers['email'])->send(new CommonMail($mailData));
+                    Mail::to($dealers['email'])->send(new RefreshTokenMail($mailData));
                     $mailMessage = 'Cron: Sent mail to Dealer '.$dealers['name'];
                     saveApiLogs($apiData['url'],'Mail Sent',$dealers['id'],$mailMessage); 
                 }
