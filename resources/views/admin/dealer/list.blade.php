@@ -71,7 +71,7 @@
                         </thead>
                         <tbody>
                             @forelse ($dealers as $dealer)
-				  @php
+				                  @php
                                     $createdAt = Carbon::parse($dealer->time_of_url_generation);
                                   @endphp
                             <tr>

@@ -12,15 +12,14 @@ use Illuminate\Queue\SerializesModels;
 class RefreshTokenMail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $mailData;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($mailData)
     {
-        //
+        $this->mailData = $mailData;
     }
-
     /**
      * Get the message envelope.
      */
