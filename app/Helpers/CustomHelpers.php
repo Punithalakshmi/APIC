@@ -91,10 +91,8 @@ if (!function_exists('api_request')) {
               return true;
           else
               return $responseArr;
-            
         } else {
             // Handle error response
-            
             return false;
         }
         
@@ -160,5 +158,13 @@ if (!function_exists('saveApiLogs')) {
         "created_at" => date("Y-m-d H:i:s")
         ));
 
+    }
+}
+
+if(!function_exists('getDeleteApiUrl')){
+
+    function getDeleteApiUrl()
+    {
+        return env('COOHOM_DELETE_API_URL');
     }
 }

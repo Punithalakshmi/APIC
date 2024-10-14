@@ -85,8 +85,9 @@ class CoohomCron extends Command
                     $mailMessage = 'Cron: Sent mail to Dealer '.$dealers['name'];
                     saveApiLogs($apiData['url'],'Mail Sent',$dealers['id'],$mailMessage); 
                 }
-              }
-           } 
-        }
+            }
+        } 
     }
+}
+
 }

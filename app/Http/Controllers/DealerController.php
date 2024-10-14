@@ -64,6 +64,8 @@ class DealerController extends Controller
         $lastInsertedId = $data->id;
         if ($data) {
             session()->flash('success', 'Dealer Add Successfully');
+            saveApiLogs('/admin/dealer/add','Dealer Add Successfully',$data->id,json_encode($data)); 
+            
             return redirect(route('admin/api/register',$lastInsertedId));
         } else {
             session()->flash('error', 'Some problem occure');
@@ -78,9 +80,25 @@ class DealerController extends Controller
  
     public function delete($id)
     {
+        $dealers = Dealer::findOrFail($id);
+      
+        $apiData    = array();
+        //$appUid                = generate_app_uid(6);
+        $appUid                = $dealers['appuid'];
+        $apiData['name']       = $dealers['name'];
+        $apiData['id']         = $dealers['id'];
+        $apiData['email']      = $dealers['email'];
+        $apiData['app_uid']    = $appUid;
+        $apiData['type']       = "Delete";
+        $apiData['url']        = getDeleteApiUrl();
+       
+        $apiRes = api_request($apiData);
+        saveApiLogs($apiData['url'],'APIC Account Deleted Successfully',$id,json_encode($apiRes)); 
         $dealers = Dealer::findOrFail($id)->delete();
+
         if ($dealers) {
             session()->flash('success', 'Dealer Deleted Successfully');
+            saveApiLogs('/admin/dealer/delete','Dealer Deleted Successfully',$id,json_encode($dealers)); 
             return redirect(route('admin/dealers'));
         } else {
             session()->flash('error', 'Dealer Not Delete successfully');

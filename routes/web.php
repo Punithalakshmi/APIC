@@ -23,6 +23,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth','admin'])->group(function () {
     Route::get('/admin/dashboard', [HomeController::class, 'index']);
+    Route::get('/admin/dealerlists', [HomeController::class, 'dealerlists'])->name('admin/dealerlists');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
