@@ -96,6 +96,7 @@
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="{{ route('admin/dealers/edit', ['id'=>$dealer->id]) }}" type="button" class="btn btn-secondary">Edit</a>
                                         <a href="{{ route('admin/dealers/delete', ['id'=>$dealer->id]) }}" type="button" class="btn btn-danger">Delete</a>
+                                        <a href="{{ route('admin/dealers/upgrade', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Upgrade</a>
                                           @if($dealer->token == '') 
                                            <a href="{{ route('admin/api/register', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Register</a>
                                           @endif  

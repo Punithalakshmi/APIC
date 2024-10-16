@@ -34,7 +34,7 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::put('/admin/dealers/update/{id}', [DealerController::class, 'update'])->name('admin.dealers.update');
     Route::get('/admin/dealers/delete/{id}', [DealerController::class, 'delete'])->name('admin/dealers/delete');
     Route::get('/admin/dealers/lists', [DealerController::class, 'dealer_list'])->name('admin/dealers/lists');
-
+    Route::get('/admin/dealers/upgrade/{id}', [DealerController::class, 'upgrade'])->name('admin/dealers/upgrade');
     Route::get('/admin/api/register/{id}', [ApiAuthenticationController::class, 'register'])->name('admin/api/register');
     Route::get('/admin/api/refreshToken/{id}', [ApiAuthenticationController::class, 'refreshToken'])->name('admin/api/refreshToken');
 });

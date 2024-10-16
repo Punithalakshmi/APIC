@@ -75,12 +75,24 @@ if (!function_exists('api_request')) {
     
         $apiUrl = $apiDataP['url'].'?appkey='.getApiKey().'&timestamp='.$apiData['timestamp'].'&appuid='.$apiDataP['app_uid'].'&sign='.$apiData['sign'];
       
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json'
-        ])->post($apiUrl, [
-            'name' => $apiDataP['name'],
-            'email' => $apiDataP['email']
-        ]);
+        if($apiDataP['type'] != 'Upgrade'){
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json'
+            ])->post($apiUrl, [
+                'name' => $apiDataP['name'],
+                'email' => $apiDataP['email']
+            ]);
+        }
+        else
+        {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json'
+            ])->put($apiUrl, [
+                'appuid' => $apiDataP['app_uid'],
+                'role_id' => 3,
+                'active' => true
+            ]);
+        }    
         
         saveApiLogs($apiDataP['url'],$apiDataP['type'],$apiDataP['id'],$response);  
         $responseArr = json_decode($response,true);  
@@ -166,5 +178,11 @@ if(!function_exists('getDeleteApiUrl')){
     function getDeleteApiUrl()
     {
         return env('COOHOM_DELETE_API_URL');
+    }
+}
+
+if(!function_exists('getUpgradeApiUrl')){
+    function getUpgradeApiUrl(){
+        return env('COOHOM_UPGRADE_API_URL');
     }
 }

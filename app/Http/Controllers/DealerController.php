@@ -106,6 +106,31 @@ class DealerController extends Controller
         }
     }
  
+
+    public function upgrade($id)
+    {
+        $dealers = Dealer::findOrFail($id);
+      
+        $apiData    = array();
+        //$appUid                = generate_app_uid(6);
+        $appUid                = $dealers['appuid'];
+        $apiData['name']       = $dealers['name'];
+        $apiData['id']         = $dealers['id'];
+        $apiData['email']      = $dealers['email'];
+        $apiData['app_uid']    = $appUid;
+        $apiData['type']       = "Upgrade";
+        $apiData['url']        = getUpgradeApiUrl();
+       
+        $apiRes = api_request($apiData);
+        saveApiLogs($apiData['url'],'APIC Account Upgraded Plan Basic to PRO Successfully',$id,json_encode($apiRes)); 
+       
+        session()->flash('success', 'Plan Upgraded Successfully');
+      //  saveApiLogs('/admin/dealer/upgrade','Plan Upgraded Successfully',$id,json_encode($dealers)); 
+        return redirect(route('admin/dealers'));
+      
+    }
+
+
     public function update(Request $request, $id)
     {
         $dealers = Dealer::findOrFail($id);
