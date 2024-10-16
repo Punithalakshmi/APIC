@@ -85,6 +85,7 @@ if (!function_exists('api_request')) {
         }
         else
         {
+            $apiUrl = $apiDataP['url'].'?appkey='.getApiKey().'&timestamp='.$apiData['timestamp'].'&appuid='.$apiDataP['app_uid'].'&sign='.$apiData['sign'].'&role_id=3&active=true';
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json'
             ])->put($apiUrl, [
