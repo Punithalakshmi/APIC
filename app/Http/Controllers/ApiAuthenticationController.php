@@ -139,8 +139,9 @@ class ApiAuthenticationController extends Controller
             if ($data) {
                
                 $mailData = array(
-                    'title' => 'Token Refreshed Successfully',
-                    'link'  => $link
+                    'title' => 'Token Refreshed Successfully -'.$dealers['name'],
+                    'link'  => $link,
+                    'name' => $dealers['name']
                 );
                    
                 Mail::to($dealers['email'])->send(new RefreshTokenMail($mailData));
