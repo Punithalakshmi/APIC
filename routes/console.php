@@ -9,6 +9,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 
-Schedule::command('coohom:cron')->weekly()->mondays()->at('06:00');
-
-//Schedule::command('coohom:cron')->everyMinute();
+//Schedule::command('coohom:cron')->weekly()->mondays()->at('06:00');
+//Schedule::command('coohom:cron')->weekly()->mondays()->at('06:00');
+Schedule::command('app:test-cr-job')->everyMinute();
