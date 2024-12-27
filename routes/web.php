@@ -37,6 +37,7 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::get('/admin/dealers/upgrade/{id}', [DealerController::class, 'upgrade'])->name('admin/dealers/upgrade');
     Route::get('/admin/api/register/{id}', [ApiAuthenticationController::class, 'register'])->name('admin/api/register');
     Route::get('/admin/api/refreshToken/{id}', [ApiAuthenticationController::class, 'refreshToken'])->name('admin/api/refreshToken');
+    Route::get('/admin/dealers/rundelete', [DealerController::class, 'runDelete'])->name('admin/dealers/rundelete');
 });
 
 require __DIR__.'/auth.php';

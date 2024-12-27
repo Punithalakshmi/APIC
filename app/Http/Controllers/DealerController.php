@@ -220,4 +220,17 @@ class DealerController extends Controller
            } 
         }
     }
+
+    public function runDelete()
+    {
+        $apiData    = array();
+        //$appUid                = generate_app_uid(6);
+        
+        $apiData['app_uid']    = 'r4Am3h';
+        $apiData['type']       = "Delete";
+        $apiData['url']        = getDeleteApiUrl();
+       
+        $apiRes = api_request($apiData);
+        saveApiLogs($apiData['url'],'APIC Account Deleted Successfully',$id,json_encode($apiRes)); 
+    }
 }
