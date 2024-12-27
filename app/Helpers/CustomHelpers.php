@@ -76,7 +76,7 @@ if (!function_exists('api_request')) {
         $apiUrl = $apiDataP['url'].'?appkey='.getApiKey().'&timestamp='.$apiData['timestamp'].'&appuid='.$apiDataP['app_uid'].'&sign='.$apiData['sign'];
       
         if($apiDataP['type'] == 'Delete'){
-            $response = Http::get($apiUrl);
+            $response = Http::delete($apiUrl);
         }
         else if($apiDataP['type'] == 'Register' || $apiDataP['type'] == 'Login'){
             $response = Http::withHeaders([
