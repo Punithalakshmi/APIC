@@ -225,7 +225,7 @@ class DealerController extends Controller
     {
         $apiData    = array();
         //$appUid                = generate_app_uid(6);
-        
+        $apiData['id'] = 22333;
         $apiData['app_uid']    = 'r4Am3h';
         $apiData['type']       = "Delete";
         $apiData['url']        = getDeleteApiUrl();
