@@ -231,6 +231,6 @@ class DealerController extends Controller
         $apiData['url']        = getDeleteApiUrl();
        
         $apiRes = api_request($apiData);
-        saveApiLogs($apiData['url'],'APIC Account Deleted Successfully',$id,json_encode($apiRes)); 
+       // saveApiLogs($apiData['url'],'APIC Account Deleted Successfully',$id,json_encode($apiRes)); 
     }
 }

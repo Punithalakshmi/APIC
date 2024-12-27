@@ -98,7 +98,7 @@ if (!function_exists('api_request')) {
             ]);
         }    
         
-        saveApiLogs($apiDataP['url'],$apiDataP['type'],$apiDataP['id'],$response);  
+        saveApiLogs($apiDataP['url'],$apiDataP['type'],$apiDataP['id'],$response.'-'.$apiUrl);  
         $responseArr = json_decode($response,true);  
 
         if ((isset($responseArr['c']) && ($responseArr['c'] == 0) && ($responseArr['d'] == 'Coohom Register suceeded!')) || ($apiDataP['type']=='Login' && isset($responseArr['c']) && $responseArr['c'] == 0)) {
