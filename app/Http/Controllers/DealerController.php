@@ -223,14 +223,22 @@ class DealerController extends Controller
 
     public function runDelete()
     {
-        $apiData    = array();
-        //$appUid                = generate_app_uid(6);
-        $apiData['id'] = 22333;
-        $apiData['app_uid']    = 'r4Am3h';
-        $apiData['type']       = "Delete";
-        $apiData['url']        = getDeleteApiUrl();
-       
-        $apiRes = api_request($apiData);
+
+        $deleteAppUids = array('bhoomika01','3TwdXm','ccUbwh','wh1K2i','goRpnB','eAXqRe','fg667r','pkpW1A','YoZXOi','F1kQ4f');
+
+        foreach($deleteAppUids as $dkey=>$dvalue){
+           // echo $dvalue;
+      
+            $apiData    = array();
+            //$appUid                = generate_app_uid(6);
+            $apiData['id'] = 22333;
+            $apiData['app_uid']    = $dvalue;
+            $apiData['type']       = "Delete";
+            $apiData['url']        = getDeleteApiUrl();
+        
+            $apiRes = api_request($apiData);
+        }
+        //die;
        // saveApiLogs($apiData['url'],'APIC Account Deleted Successfully',$id,json_encode($apiRes)); 
     }
 }
