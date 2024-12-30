@@ -151,7 +151,20 @@ class DealerController extends Controller
         $dealers->current_url = $current_url;
         $dealers->onboarding_date = $onboarding_date;
         $dealers->apic_user_type = $apic_user_type;
+
+        $appUid                = $dealers['appuid'];
+        $apiData['name']       = $dealers['name'];
+        $apiData['id']         = $dealers['id'];
+        $apiData['email']      = $dealers['email'];
+        $apiData['app_uid']    = $appUid;
+        $apiData['type']       = "Update";
+        $apiData['url']        = getUpdateApiUrl();
+       
+        $apiRes = api_request($apiData);
+        saveApiLogs($apiData['url'],'APIC Account Updated Successfully',$id,json_encode($apiRes)); 
+
         $data = $dealers->save();
+
         if ($data) {
             session()->flash('success', 'Dealer Update Successfully');
             return redirect(route('admin/dealers'));

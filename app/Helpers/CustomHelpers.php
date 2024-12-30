@@ -78,6 +78,15 @@ if (!function_exists('api_request')) {
         if($apiDataP['type'] == 'Delete'){
             $response = Http::delete($apiUrl);
         }
+        else if($apiDataP['type'] == 'Update'){
+            //$response = Http::put($apiUrl);
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json'
+                ])->put($apiUrl, [
+                    'name' => $apiDataP['name'],
+                    'email' => $apiDataP['email']
+                ]);
+        }
         else if($apiDataP['type'] == 'Register' || $apiDataP['type'] == 'Login'){
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json'
@@ -188,5 +197,11 @@ if(!function_exists('getDeleteApiUrl')){
 if(!function_exists('getUpgradeApiUrl')){
     function getUpgradeApiUrl(){
         return env('COOHOM_UPGRADE_API_URL');
+    }
+}
+
+if(!function_exists('getUpdateApiUrl')){
+    function getUpdateApiUrl(){
+        return env('COOHOM_UPDATE_API_URL');
     }
 }
