@@ -11,7 +11,7 @@ class TestCrJob extends Command
      *
      * @var string
      */
-    protected $signature = 'app:test-cr-job';
+    protected $signature = 'testcr:job';
 
     /**
      * The console command description.
