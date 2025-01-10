@@ -3,6 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Mail\CommonMail;
+use App\Mail\RefreshTokenMail;
+use Mail;
 
 class TestJob extends Command
 {
