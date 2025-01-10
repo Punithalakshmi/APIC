@@ -10,5 +10,7 @@ Artisan::command('inspire', function () {
 
 //Schedule::command('coohom:cron')->everyMinute();
 
-Schedule::command('app:test-job')->everyMinute();
+//Schedule::command('app:test-job')->everyFiveMinutes();
+Schedule::command('jobs:fetch-update')->everyFiveMinutes();
+
 
