@@ -29,7 +29,8 @@ class TestCrJob extends Command
         $mailData = array(
             'title' => 'Cron Job Test',
             'link'  => '',
-            'name' => 'Punitha'
+            'name' => 'Punitha',
+            'title'=> 'Test Cron'
         );
         
         Mail::to('punitha@izaaptech.in')->send(new CommonMail($mailData));
