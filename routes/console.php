@@ -9,5 +9,6 @@ Artisan::command('inspire', function () {
 
 
 //Schedule::command('coohom:cron')->everyMinute();
-Schedule::command('testcr:job')->everyMinute();
+
+Schedule::command('app:test-job')->everyFiveMinutes();
 
