@@ -36,6 +36,6 @@ class TestJob extends Command
             'title'=> 'Test Cron'
         );
         
-        Mail::to('punitha@izaaptech.in')->send(new CommonMail($mailData));
+        Mail::to('gowtham.izaap@gmail.com')->send(new CommonMail($mailData));
     }
 }
