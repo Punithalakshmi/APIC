@@ -4,14 +4,14 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class TestCrJob extends Command
+class TestJob extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'testcr:job';
+    protected $signature = 'app:test-job';
 
     /**
      * The console command description.
