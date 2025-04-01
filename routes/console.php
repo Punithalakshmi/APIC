@@ -10,8 +10,8 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->at('10:04');
 
 
-Schedule::command('coohom:cron')->mondays()->at('00:30');
-
+//Schedule::command('coohom:cron')->mondays()->at('00:30');
+Schedule::command('coohom:cron')->everyMinute();
 //Schedule::command('app:test-job')->everyFiveMinutes();
 Schedule::command('jobs:fetch-update')->at('10:04');
 
