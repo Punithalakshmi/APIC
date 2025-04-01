@@ -7,6 +7,7 @@ use App\Models\Dealer;
 use App\Models\Apilogs;
 use App\Mail\CommonMail;
 use App\Mail\RefreshTokenMail;
+use App\Mail\TokenNotRefreshed;
 use Mail;
 
 class CoohomCron extends Command
@@ -31,12 +32,13 @@ class CoohomCron extends Command
     public function handle()
     {
         $dealersLists = Dealer::where(array("status" => 1))->get()->toArray();
-       
+
         if(is_array($dealersLists) && count($dealersLists) > 0)
         {
            
            foreach($dealersLists as $d => $dealers ){
-
+          //  echo "<br />";
+         //   echo $dealers['id']; 
             $apiData    = array();
             $appUid                = $dealers['appuid'];
             $apiData['name']       = $dealers['name'];
@@ -81,10 +83,20 @@ class CoohomCron extends Command
                         'name' => $dealers['name']
                     );
                     
-                    Mail::to($dealers['email'])->send(new RefreshTokenMail($mailData));
+                  //  Mail::to($dealers['email'])->send(new RefreshTokenMail($mailData));
                     $mailMessage = 'Cron: Sent mail to Dealer '.$dealers['name'];
                     saveApiLogs($apiData['url'],'Mail Sent',$dealers['id'],$mailMessage); 
                 }
+            }
+            else
+            {
+                $mailData = array(
+                    'title' => 'The token has not been refreshed. - '.$dealers['name'],
+                    'link'  => '',
+                    'name' => $dealers['name']
+                );
+
+                Mail::to('punitha@izaaptech.in')->send(new TokenNotRefreshed($mailData));
             }
         } 
     }

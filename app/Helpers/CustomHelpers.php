@@ -118,6 +118,7 @@ if (!function_exists('api_request')) {
               return $responseArr;
         } else {
             // Handle error response
+            saveApiLogs($apiDataP['url'],$apiDataP['type'].': Api Response',$apiDataP['id'],$response.'-'.$apiUrl);  
             return false;
         }
         
