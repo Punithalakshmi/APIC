@@ -12,7 +12,7 @@ Artisan::command('inspire', function () {
 
 Schedule::command('coohom:cron')->mondays()->at('00:30');
 
-//Schedule::command('app:test-job')->everyFiveMinutes();
-Schedule::command('jobs:fetch-update')->at('10:04');
+//Schedule::command('app:test-job')->everyMinute();
+Schedule::command('jobs:fetch-update')->mondays()->at('00:30');
 
-
+//Schedule::command('coohom:cron')->everyMinute();
