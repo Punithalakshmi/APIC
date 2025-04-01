@@ -32,6 +32,11 @@ class CoohomCron extends Command
     public function handle()
     {
         $dealersLists = Dealer::where(array("status" => 1))->get()->toArray();
+        
+      //  $count = dd($dealersLists->count());
+
+        saveApiLogs('Cron','Cron: Total Dealer Record Count '.count($dealersLists),'1',json_encode($dealersLists)); 
+            
 
         if(is_array($dealersLists) && count($dealersLists) > 0)
         {

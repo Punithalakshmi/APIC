@@ -37,7 +37,7 @@ class DealerController extends Controller
         
         $dealers = $query->paginate(10);
         $total   = Dealer::count();
-        $dealersLists = Dealer::where(array("status" => 1))->get()->toArray();
+       // $dealersLists = Dealer::where(array("status" => 1))->get()->toArray();
        // echo "<pre>";
       //  print_r($dealersLists); die;
         return view('admin.dealer.list', compact(['dealers', 'total']));
