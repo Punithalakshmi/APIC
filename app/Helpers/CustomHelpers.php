@@ -206,3 +206,10 @@ if(!function_exists('getUpdateApiUrl')){
         return env('COOHOM_UPDATE_API_URL');
     }
 }
+
+
+if(!function_exists('getCustomTriggerEmails')){
+    function getCustomTriggerEmails(){
+        return array('punitha@izaaptech.in','vijay.h@aristo-india.com','naveen.s@aristo-india.com','alan@aristo-india.com');
+    }
+}

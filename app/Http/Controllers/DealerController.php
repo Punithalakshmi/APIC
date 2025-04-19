@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Dealer;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use Mail;
+use App\Mail\CommonMail;
+use App\Mail\RefreshTokenMail;
+use App\Mail\TestEmail;
+
+
 
 class DealerController extends Controller
 {
@@ -40,6 +46,7 @@ class DealerController extends Controller
        // $dealersLists = Dealer::where(array("status" => 1))->get()->toArray();
        // echo "<pre>";
       //  print_r($dealersLists); die;
+        Mail::to(array('punitha@izaaptech.in','punitha.lakshmi87@gmail.com ','punitha.izaap@gmail.com'))->send(new TestEmail());
         return view('admin.dealer.list', compact(['dealers', 'total']));
     }
 
