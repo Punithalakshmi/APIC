@@ -46,7 +46,7 @@ class DealerController extends Controller
        // $dealersLists = Dealer::where(array("status" => 1))->get()->toArray();
        // echo "<pre>";
       //  print_r($dealersLists); die;
-        Mail::to(array('punitha@izaaptech.in','punitha.lakshmi87@gmail.com ','punitha.izaap@gmail.com'))->send(new TestEmail());
+      //  Mail::to(array('punitha@izaaptech.in','punitha.lakshmi87@gmail.com ','punitha.izaap@gmail.com'))->send(new TestEmail());
         return view('admin.dealer.list', compact(['dealers', 'total']));
     }
 
