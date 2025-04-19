@@ -40,7 +40,8 @@ class CoohomCron extends Command
 
         if(count($dealersLists) > 0)
         {
-           foreach($dealersLists as $d => $dealers ){
+            
+           foreach($dealersLists as $d => $dealers ) {
 
             try 
             {
@@ -76,21 +77,19 @@ class CoohomCron extends Command
 
                 saveApiLogs($apiData['url'],'Cron: Token has been refreshed Successfully',$dealers['id'],json_encode($apiLoginres)); 
             
-                if ($data) {
+                $mailData = array(
+                    'title' => 'Token has been refreshed Successfully - '.$dealers['name'],
+                    'link'  => $link,
+                    'name' => $dealers['name']
+                );
                 
-                    $mailData = array(
-                        'title' => 'Token has been refreshed Successfully - '.$dealers['name'],
-                        'link'  => $link,
-                        'name' => $dealers['name']
-                    );
-                    
-                     Mail::to($dealers['email'])->send(new RefreshTokenMail($mailData));
-                     Mail::to('punitha@izaaptech.in')->send(new RefreshTokenMail($mailData));
-                     Mail::to($customEmails)->send(new RefreshTokenMail($mailData));
-                     
-                    $mailMessage = 'Cron: Sent mail to Dealer '.$dealers['name'];
-                    saveApiLogs($apiData['url'],'Mail Sent',$dealers['id'],$mailMessage); 
-                  }
+                Mail::to($dealers['email'])->send(new RefreshTokenMail($mailData));
+                
+                Mail::to($customEmails)->send(new RefreshTokenMail($mailData));
+                Mail::to('punitha@izaaptech.in')->send(new RefreshTokenMail($mailData));
+                $mailMessage = 'Cron: Sent mail to Dealer '.$dealers['name'];
+                saveApiLogs($apiData['url'],'Mail Sent',$dealers['id'],$mailMessage); 
+                  
                 
               }
               catch(\Exception $e){
@@ -99,8 +98,9 @@ class CoohomCron extends Command
                     'link'  => '',
                     'name' => $dealers['name']
                 );
+                
+                Mail::to($customEmails)->send(new TokenNotRefreshed($mailData));
                 Mail::to('punitha@izaaptech.in')->send(new TokenNotRefreshed($mailData));
-                Mail::to($customEmails)->send(new RefreshTokenMail($mailData));
                 saveApiLogs($apiData['url'],'Cron Error: Token Not Refreshed',$dealers['id'],$e->getMessage()); 
              }          
         } 
