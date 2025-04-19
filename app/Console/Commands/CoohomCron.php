@@ -31,14 +31,16 @@ class CoohomCron extends Command
      */
     public function handle()
     {
-        $dealersLists = Dealer::where(array("status" => 1))->get()->toArray();
+	   $dealersLists = Dealer::where(array("status" => 1))->get();
+         //$dealersLists = Dealer::where("id",">",34)->get();
+
         
       //  $count = dd($dealersLists->count());
 
         saveApiLogs('Cron','Cron: Total Dealer Record Count '.count($dealersLists),'1',json_encode($dealersLists)); 
             
 
-        if(is_array($dealersLists) && count($dealersLists) > 0)
+        if(count($dealersLists) > 0)
         {
            
            foreach($dealersLists as $d => $dealers ){
@@ -88,7 +90,7 @@ class CoohomCron extends Command
                         'name' => $dealers['name']
                     );
                     
-                  //  Mail::to($dealers['email'])->send(new RefreshTokenMail($mailData));
+                     Mail::to($dealers['email'])->send(new RefreshTokenMail($mailData));
                     $mailMessage = 'Cron: Sent mail to Dealer '.$dealers['name'];
                     saveApiLogs($apiData['url'],'Mail Sent',$dealers['id'],$mailMessage); 
                 }
