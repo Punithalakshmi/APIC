@@ -95,9 +95,11 @@
                                 <td class="align-middle">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="{{ route('admin/dealers/edit', ['id'=>$dealer->id]) }}" type="button" class="btn btn-secondary">Edit</a>
-                                        <a href="{{ route('admin/dealers/delete', ['id'=>$dealer->id]) }}" onclick="return confirm('Are you sure you want to delete this dealer?');" type="button" class="btn btn-danger">Delete</a>
+                                       <!-- <a href="{{ route('admin/dealers/delete', ['id'=>$dealer->id]) }}" onclick="return confirm('Are you sure you want to delete this dealer?');" type="button" class="btn btn-danger">Delete</a> -->
                                         @if($dealer->apic_user_type != 'Pro')
                                           <a href="{{ route('admin/dealers/upgrade', ['id'=>$dealer->id]) }}" onclick="return confirm('Are you sure you want to upgrade this dealer?');" type="button" class="btn btn-primary">Upgrade</a>
+                                        @else
+                                        <a href="{{ route('admin/dealers/downgrade', ['id'=>$dealer->id]) }}" onclick="return confirm('Are you sure you want to downgrade this dealer?');" type="button" class="btn btn-primary">Downgrade</a>
                                         @endif 
                                           @if($dealer->token == '') 
                                            <a href="{{ route('admin/api/register', ['id'=>$dealer->id]) }}" type="button" class="btn btn-primary">Register</a>

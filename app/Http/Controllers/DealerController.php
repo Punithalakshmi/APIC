@@ -249,14 +249,54 @@ class DealerController extends Controller
         $deleteAppUids = array('bhoomika01','3TwdXm','ccUbwh','wh1K2i','goRpnB','eAXqRe','fg667r','pkpW1A','YoZXOi','F1kQ4f');
 
         foreach($deleteAppUids as $dkey=>$dvalue){
-           // echo $dvalue;
-      
+        
             $apiData    = array();
-            //$appUid                = generate_app_uid(6);
             $apiData['id'] = 22333;
             $apiData['app_uid']    = $dvalue;
             $apiData['type']       = "Delete";
             $apiData['url']        = getDeleteApiUrl();
+        
+            $apiRes = api_request($apiData);
+        }
+        //die;
+       // saveApiLogs($apiData['url'],'APIC Account Deleted Successfully',$id,json_encode($apiRes)); 
+    }
+
+    public function downgrade($id)
+    {
+        $dealers = Dealer::findOrFail($id);
+      
+        $apiData    = array();
+        //$appUid                = generate_app_uid(6);
+        $appUid                = $dealers['appuid'];
+        $apiData['name']       = $dealers['name'];
+        $apiData['id']         = $dealers['id'];
+        $apiData['email']      = $dealers['email'];
+        $apiData['app_uid']    = $appUid;
+        $apiData['type']       = "Downgrade";
+        $apiData['url']        = getUpgradeApiUrl();
+       
+        $apiRes = api_request($apiData);
+        saveApiLogs($apiData['url'],'APIC Account Downgraded Plan Basic to PRO Successfully',$id,json_encode($apiRes)); 
+       
+        session()->flash('success', 'Plan Downgraded Successfully');
+      //  saveApiLogs('/admin/dealer/upgrade','Plan Upgraded Successfully',$id,json_encode($dealers)); 
+        return redirect(route('admin/dealers'));
+      
+    }
+
+    public function DowngradeProToBasic()
+    {
+
+        $deleteAppUids = array('OBvX0o','i6c5rf','vvQvVQ','OxwxLF','SEX1kv','Cgz0X7','e8htw9','l4VGQq','5WVTFu','6XpfmH','kHHW2w');
+
+        foreach($deleteAppUids as $dkey=>$dvalue){
+        
+            $apiData    = array();
+            $apiData['id'] = 22333;
+            $apiData['app_uid']    = $dvalue;
+            $apiData['type']       = "Downgrade";
+            $apiData['url']        = getUpgradeApiUrl();
         
             $apiRes = api_request($apiData);
         }
