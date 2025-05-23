@@ -115,7 +115,7 @@ if (!function_exists('api_request')) {
                     'Content-Type' => 'application/json'
                 ])->put($apiUrl, [
                     'appuid' => $apiDataP['app_uid'],
-                    'role_id' => 5,
+                    'role_id' => 3,
                     'active' => false
                 ]);
            
